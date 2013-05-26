@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="title">
+                <source>title</source>
+                <target>TEST</target>
+            </trans-unit>
+            <trans-unit id="round">
+                <source>round</source>
+                <target>Attempt</target>
+            </trans-unit>
+            <trans-unit id="end_test">
+                <source>end_test</source>
+                <target>END TEST</target>
+            </trans-unit>
+            <trans-unit id="statistics.summary">
+                <source>statistics.summary</source>
+                <target>Summary of this session</target>
+            </trans-unit>
+            <trans-unit id="statistics.time.spent">
+                <source>statistics.time.spent</source>
+                <target>Time Spent</target>
+            </trans-unit>
+            <trans-unit id="statistics.time.left">
+                <source>statistics.time.left</source>
+                <target>Time Left</target>
+            </trans-unit>
+            <trans-unit id="time.up">
+                <source>time.up</source>
+                <target>Your time is up</target>
+            </trans-unit>
+            <trans-unit id="last_card_title">
+                <source>last_card_title</source>
+                <target>Click END TEST button to save your results.</target>
+            </trans-unit>
+            <trans-unit id="repeat">
+                <source>repeat</source>
+                <target>Repeat</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
