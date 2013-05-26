@@ -1,6 +1,6 @@
 # Install
 
-  gem 'rubber_ring', :git => 'git://github.com/zigomir/rubber_ring.git'
+    gem install transync
 
 You need settings file needs to be named `settings.yml`. For example see `settings.SAMPLE.yml`.
 
