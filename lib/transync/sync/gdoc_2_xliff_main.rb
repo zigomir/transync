@@ -6,7 +6,6 @@ require_relative 'gdoc_to_xliff'
 require_relative 'sync_util'
 
 class Gdoc2XliffMain
-  include SyncUtil
   attr_reader :path, :config
 
   def initialize(path)
@@ -18,7 +17,7 @@ class Gdoc2XliffMain
     logger = Logger.new('.transync_log/gdoc2xliff.log', 'monthly')
 
     @config['FILES'].each do |file|
-      xliff_translations = check_and_get_xliff_files(@config['LANGUAGES'], path, file)
+      xliff_translations = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], path, file)
       gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], file)
 
       @config['LANGUAGES'].each do |language|
