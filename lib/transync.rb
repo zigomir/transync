@@ -1,6 +1,7 @@
 require_relative 'transync/sync/xliff_2_gdoc_main'
 require_relative 'transync/sync/gdoc_2_xliff_main'
 require_relative 'transync/sync/init'
+require_relative 'transync/sync/sync_util'
 
 module Transync
 
@@ -20,6 +21,18 @@ module Transync
     if mode == 'init'
       init = Init.new(path)
       init.run
+    end
+
+    if mode == 'check'
+      GdocTrans::CONFIG['FILES'].each do |file|
+        SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file)
+      end
+    end
+
+    if mode == 'check_and_add_missing'
+      GdocTrans::CONFIG['FILES'].each do |file|
+        SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file, true)
+      end
     end
   end
 

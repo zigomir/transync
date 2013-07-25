@@ -11,6 +11,9 @@ For example see `settings.SAMPLE.yml`.
 
 ```bash
 transync init path/to/your/xliff/files
+transync check path/to/your/xliff/files
+transync check_and_add_missing path/to/your/xliff/files
+
 transync x2g path/to/your/xliff/files
 transync g2x path/to/your/xliff/files
 ```
