@@ -1,5 +1,6 @@
 require_relative 'transync/sync/xliff_2_gdoc_main'
 require_relative 'transync/sync/gdoc_2_xliff_main'
+require_relative 'transync/sync/init'
 
 module Transync
 
@@ -14,6 +15,11 @@ module Transync
     if mode == 'g2x'
       g2x = Gdoc2XliffMain.new(path)
       g2x.run
+    end
+
+    if mode == 'init'
+      init = Init.new(path)
+      init.run
     end
   end
 
