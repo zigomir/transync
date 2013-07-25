@@ -11,7 +11,7 @@ class Gdoc2XliffMain
 
   def initialize(path)
     @path = path
-    @config = YAML.load(File.open('settings.yml'))
+    @config = GdocTrans::CONFIG
   end
 
   def run
