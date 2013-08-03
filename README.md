@@ -18,9 +18,9 @@ For example see `settings.SAMPLE.yml`.
 ### Running order
 
 ```
-transync test   # test if all keys are set for all the languages
+transync test   # test if all keys are set for all the languages: no output means that no key is missing
 transync update # will test and add all the missing keys that are not presented for a particular language
-transync init   # will sync all translations with Google spreadsheet
+transync init   # will sync all translations with Google spreadsheet. You need to run update command first, to ensure no keys are missing.
 
 # After init was made you have these two to sync between gdoc and xliff
 transync x2g
@@ -30,7 +30,7 @@ transync g2x
 ### Development on this gem
 
 ```
-rake install && transync x2g test/fixtures
+rake install && transync test
 ```
 
 # Assumptions:

@@ -30,9 +30,10 @@ class Init
     end
 
     # now sync all our keys and translations to gdoc
-    # TODO uncommet
-    #x2g = Xliff2GdocMain.new(path)
-    #x2g.run
+    # this won't work if local files are not 'clean'.
+    # to make them clean run test and update first!
+    x2g = Xliff2GdocMain.new(path)
+    x2g.run
   end
 
 end
