@@ -7,26 +7,29 @@ gem install transync
 You need settings file to be named `settings.yml` and to be in same directory from which we are running `transync` command.
 For example see `settings.SAMPLE.yml`.
 
-### Example
-
-```bash
-transync init path/to/your/xliff/files
-transync check path/to/your/xliff/files
-transync check_and_add_missing path/to/your/xliff/files
-
-transync x2g path/to/your/xliff/files
-transync g2x path/to/your/xliff/files
-```
-
 ### Process
 
 - Create new Google Doc Spreadsheet
 - Copy it's `key` from URL to `settings.yml`
-- Set all the languages and xliff you want to sync in `settings.yml` (look at `settings.SAMPLE.yml`).
+- Set all the languages and `xliff` you want to sync in `settings.yml` (look at `settings.SAMPLE.yml`).
+- set `XLIFF_FILES_PATH` to set path where are your `xliff` files. In project do it with relative path so others can use it.
+- run these commands respectively
 
-### Example for testing within this gem
+### Running order
 
-```bash
+```
+transync test   # test if all keys are set for all the languages
+transync update # will test and add all the missing keys that are not presented for a particular language
+transync init   # will sync all translations with Google spreadsheet
+
+# After init was made you have these two to sync between gdoc and xliff
+transync x2g
+transync g2x
+```
+
+### Development on this gem
+
+```
 rake install && transync x2g test/fixtures
 ```
 

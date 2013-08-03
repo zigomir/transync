@@ -5,8 +5,9 @@ require_relative 'transync/sync/sync_util'
 
 module Transync
 
-  def self.run(mode, path)
+  def self.run(mode)
     FileUtils.mkdir('.transync_log') unless Dir.exist?('.transync_log')
+    path = GdocTrans::CONFIG['XLIFF_FILES_PATH']
 
     if mode == 'x2g'
       x2g = Xliff2GdocMain.new(path)
@@ -23,13 +24,13 @@ module Transync
       init.run
     end
 
-    if mode == 'check'
+    if mode == 'test'
       GdocTrans::CONFIG['FILES'].each do |file|
         SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file)
       end
     end
 
-    if mode == 'check_and_add_missing'
+    if mode == 'update'
       GdocTrans::CONFIG['FILES'].each do |file|
         SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file, true)
       end
