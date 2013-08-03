@@ -5,15 +5,11 @@ GDOC:
   email: "user@example.com"
   password: "secret"
 
+XLIFF_FILES_PATH: test/fixtures
+
 FILES: # xliff files <=> gdoc tabs
-  - "cockpit"
-  - "common"
-  - "desktop"
-  - "error-msg"
-  - "FOSUserBundle"
-  - "home"
-  - "learn"
-  - "validators"
+#  - "messages"
+#  - "validators"
   - "test"
 
 LANGUAGES:

@@ -1,31 +1,42 @@
 # Install
 
-    gem install transync
+```bash
+gem install transync
+```
 
-You need settings file needs to be named `settings.yml`. For example see `settings.SAMPLE.yml`.
+You need settings file to be named `settings.yml` and to be in same directory from which we are running `transync` command.
+For example see `settings.SAMPLE.yml`.
 
-### Example
+### Process
 
-    transync x2g path/to/your/xliff/files
-    transync g2x path/to/your/xliff/files
+- Create new Google Doc Spreadsheet
+- Copy it's `key` from URL to `settings.yml`
+- Set all the languages and `xliff` you want to sync in `settings.yml` (look at `settings.SAMPLE.yml`).
+- set `XLIFF_FILES_PATH` to set path where are your `xliff` files. In project do it with relative path so others can use it.
+- run these commands respectively
 
-### Example for testing within this gem
+### Running order
 
-    rake install && transync x2g test/fixtures
+```
+transync test   # test if all keys are set for all the languages: no output means that no key is missing
+transync update # will test and add all the missing keys that are not presented for a particular language
+transync init   # will sync all translations with Google spreadsheet. You need to run update command first, to ensure no keys are missing.
+
+# After init was made you have these two to sync between gdoc and xliff
+transync x2g
+transync g2x
+```
+
+### Development on this gem
+
+```
+rake install && transync test
+```
 
 # Assumptions:
 
 You have xliff files in one directory, named like: common.en.xliff where common is name of the file and also google doc
 spreadsheet tab. en is language and you have google doc with structure where first row is key, language 1, language 2
-
-# Config
-
-Google doc
-https://docs.google.com/a/astina.ch/spreadsheet/ccc?key=0ApAHdLDpSUFudHhuWU9vQ0ZPaWNoV3VxU045cXhHLWc#gid=3
-key = 0ApAHdLDpSUFudHhuWU9vQ0ZPaWNoV3VxU045cXhHLWc
-
-
-GDOC_KEY = 0ApAHdLDpSUFudHhuWU9vQ0ZPaWNoV3VxU045cXhHLWc
 
 # Features
 
@@ -38,7 +49,3 @@ Gem docs available at http://gimite.net/doc/google-drive-ruby
 # Known issues
 
 It won't add keys as it should if not all languages are set in settings.yml
-
-# TODO
-
-- support for yaml files
