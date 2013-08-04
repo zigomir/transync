@@ -33,7 +33,7 @@ class XliffTransReader
   # will go through each and find if any xliff is missing keys for translations
   def valid?(create = false)
     missing = 0
-
+    missing_translation_text = GdocTrans::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
     all_translations_for_language = {language: nil, translations: []}
 
     self.get_translations[:translations].each do |x_trans|
@@ -51,7 +51,10 @@ class XliffTransReader
           return false unless create
 
           p "#{missing + 1}. #{file}.#{key_lang} was missing translation for key '#{x_trans[:key]}'."
-          all_translations_for_language[:translations] << { key: x_trans[:key],  value: 'Missing translation' }
+          all_translations_for_language[:translations] << {
+              key: x_trans[:key],
+              value: "#{missing_translation_text} - #{x_trans[:key]}"
+          }
           missing += 1
         else
           all_translations_for_language[:translations] << xliff_lang_value

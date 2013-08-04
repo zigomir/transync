@@ -5,6 +5,7 @@ GDOC:
   email: "user@example.com"
   password: "secret"
 
+MISSING_TRANSLATION_TEXT: "#MISSING-TRANS#"
 XLIFF_FILES_PATH: test/fixtures
 
 FILES: # xliff files <=> gdoc tabs
