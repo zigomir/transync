@@ -17,7 +17,7 @@ test/version_tmp
 tmp
 
 
-settings.yml
+transync.yml
 log/*.log*
 .idea
 .transync_log

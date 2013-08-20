@@ -1,14 +1,14 @@
+require_relative 'sync_util'
+
 class GdocToXliff
   attr_accessor :xliff_translations,
                 :gdoc_trans_reader,
-                :language,
-                :logger
+                :language
 
   def initialize(options = {})
     self.xliff_translations = options[:xliff_translations]
     self.gdoc_trans_reader = options[:gdoc_trans_reader]
     self.language = options[:language]
-    self.logger = options[:logger]
   end
 
   def sync
@@ -28,14 +28,12 @@ class GdocToXliff
 
       # whole key is missing
       if x_trans.nil?
-        p "Adding Key: #{gdoc_trans[:key]} to #{file}(#{language}) and value '#{gdoc_trans[:value]}'"
-        logger.info "Adding Key: #{gdoc_trans[:key]} to #{file}(#{language}) and value '#{gdoc_trans[:value]}'"
+        SyncUtil.info_diff(file, language, 'Adding', gdoc_trans)
 
         new_xliff_hash[:translations] << gdoc_trans
         dirty = true
       elsif gdoc_trans[:value] != x_trans[:value]
-        p "Changing #{file}(#{language}) #{gdoc_trans[:key]}: '#{x_trans[:value]}' to '#{gdoc_trans[:value]}'"
-        logger.info "Changing #{file}(#{language}) #{gdoc_trans[:key]}: '#{x_trans[:value]}' to '#{gdoc_trans[:value]}'"
+        SyncUtil.info_diff(file, language, 'Changing', gdoc_trans)
 
         x_trans[:value] = gdoc_trans[:value]
         new_xliff_hash[:translations] << x_trans

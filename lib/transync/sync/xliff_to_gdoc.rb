@@ -1,3 +1,5 @@
+require_relative 'sync_util'
+
 class XliffToGdoc
   attr_accessor :xliff_translations,
                 :gdoc_trans_reader,
@@ -12,7 +14,6 @@ class XliffToGdoc
     self.gdoc_trans_writer = options[:gdoc_trans_writer]
     self.language = options[:language]
     self.languages = options[:languages]
-    self.logger = options[:logger]
   end
 
   def sync
@@ -37,8 +38,7 @@ class XliffToGdoc
         gdoc_trans_writer.write(current_row, 'key',    x_trans[:key])
         gdoc_trans_writer.write(current_row, language, x_trans[:value])
 
-        p "#{current_row}) Adding Key: #{x_trans[:key]} to #{file}(#{language}) and value '#{x_trans[:value]}'"
-        logger.info "#{current_row}) Adding Key: #{x_trans[:key]} to #{file}(#{language}) and value '#{x_trans[:value]}'"
+        SyncUtil.info_diff(file, language, 'Adding', x_trans)
 
         # Go for all other languages if key was missing
         languages.each do |key_lang|
@@ -53,9 +53,7 @@ class XliffToGdoc
         dirty = true
       elsif gdoc_trans[:value] != x_trans[:value]
         gdoc_trans_writer.write(current_row, language, x_trans[:value])
-
-        p "#{current_row}) Changing #{file}(#{language}) #{x_trans[:key]}: '#{gdoc_trans[:value]}' to '#{x_trans[:value]}'"
-        logger.info "#{current_row}) Changing #{file}(#{language}) #{x_trans[:key]}: '#{gdoc_trans[:value]}' to '#{x_trans[:value]}'"
+        SyncUtil.info_diff(file, language, 'Changing', x_trans)
         dirty = true
       end
     end

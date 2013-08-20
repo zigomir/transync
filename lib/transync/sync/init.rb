@@ -1,5 +1,4 @@
 require 'yaml'
-require 'logger'
 require_relative '../gdoc_trans/gdoc_trans_writer'
 require_relative 'xliff_to_gdoc'
 
@@ -19,8 +18,11 @@ class Init
     spreadsheet = session.spreadsheet_by_key(@gdoc_access['key'])
 
     @config['FILES'].each do |file|
-      worksheet = spreadsheet.add_worksheet(file)
-      p "Adding #{file} worksheet to spreadsheet with first row (key and languages)"
+      worksheet = spreadsheet.worksheets.select { |s| s.title == file }.first
+      if worksheet.nil?
+        worksheet = spreadsheet.add_worksheet(file)
+        p "Adding #{file} worksheet to spreadsheet with first row (key and languages)"
+      end
 
       worksheet[1, 1] = 'Key'
       @config['LANGUAGES'].each_with_index do |language, index|

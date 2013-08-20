@@ -4,14 +4,14 @@
 gem install transync
 ```
 
-You need settings file to be named `settings.yml` and to be in same directory from which we are running `transync` command.
-For example see `settings.SAMPLE.yml`.
+You need settings file to be named `transync.yml` and to be in same directory from which we are running `transync` command.
+For example see `transync.SAMPLE.yml`.
 
 ### Process
 
 - Create new Google Doc Spreadsheet
-- Copy it's `key` from URL to `settings.yml`
-- Set all the languages and `xliff` you want to sync in `settings.yml` (look at `settings.SAMPLE.yml`)
+- Copy it's `key` from URL to `transync.yml`
+- Set all the languages and `xliff` you want to sync in `transync.yml` (look at `transync.SAMPLE.yml`)
 - set `XLIFF_FILES_PATH` to set path where are your `xliff` files. In project do it with relative path so others can use it
 - set `MISSING_TRANSLATION_TEXT` to set what text should go to `target` element for translation
 - run these commands respectively
@@ -49,4 +49,4 @@ Gem docs available at http://gimite.net/doc/google-drive-ruby
 
 # Known issues
 
-It won't add keys as it should if not all languages are set in settings.yml
+It won't add keys as it should if not all languages are set in transync.yml

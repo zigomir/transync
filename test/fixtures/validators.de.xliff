@@ -12,7 +12,7 @@
             </trans-unit>
             <trans-unit id="end_test">
                 <source>end_test</source>
-                <target>xxx</target>
+                <target>End-Test</target>
             </trans-unit>
         </body>
     </file>
