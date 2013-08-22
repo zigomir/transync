@@ -1,64 +1,24 @@
-require_relative 'sync_util'
+require_relative '../gdoc_trans/gdoc_trans_reader'
+require_relative '../xliff_trans/xliff_trans_reader'
 
 class XliffToGdoc
-  attr_accessor :xliff_translations,
-                :gdoc_trans_reader,
-                :gdoc_trans_writer,
-                :language,
-                :languages,
-                :logger
 
   def initialize(options = {})
-    self.xliff_translations = options[:xliff_translations]
-    self.gdoc_trans_reader = options[:gdoc_trans_reader]
-    self.gdoc_trans_writer = options[:gdoc_trans_writer]
-    self.language = options[:language]
-    self.languages = options[:languages]
+    @path     = options[:path]
+    @file     = options[:file]
+    @language = options[:language]
+    @config   = GdocTrans::CONFIG
   end
 
-  def sync
-    gdoc_tab_language = gdoc_trans_reader.build_trans_hash(language)
-    dirty = false
-    file = gdoc_tab_language[:file]
+  def build_new_hash(language)
+    gdoc_trans_reader  = GdocTransReader.new(@config['GDOC'], @file)
+    xliff_trans_reader = XliffTransReader.new(@path, @file, @language, @languages)
 
-    xliff_for_language = xliff_translations.detect{ |x| x[:language] == language }
-    xliff_for_language[:translations].each_with_index do |x_trans, index|
+    # TODO - freaking inconsistent API as hell
+    g_trans_hash = gdoc_trans_reader.build_trans_hash(@language)
+    x_trans_hash = xliff_trans_reader.get_translations
 
-      # for current xliff translation find the same trans key in google doc
-      gdoc_trans = gdoc_tab_language[:translations].detect{ |g_trans| g_trans[:key] == x_trans[:key] }
-      current_row = index + GdocTrans::START_ROW
-
-      # whole key is missing
-      if gdoc_trans.nil?
-        # heavy coupling
-        gdoc_trans_reader.worksheet = gdoc_trans_writer.shift_up(current_row, xliff_for_language[:translations].length)
-        # recalculate hashes after shift
-        gdoc_tab_language = gdoc_trans_reader.build_trans_hash(language)
-
-        gdoc_trans_writer.write(current_row, 'key',    x_trans[:key])
-        gdoc_trans_writer.write(current_row, language, x_trans[:value])
-
-        SyncUtil.info_diff(file, language, 'Adding', x_trans)
-
-        # Go for all other languages if key was missing
-        languages.each do |key_lang|
-          next if key_lang == language
-
-          xliff_lang = xliff_translations.detect{ |xt| xt[:language] == key_lang }
-          xliff_lang_value = xliff_lang[:translations].detect{ |xt| xt[:key] == x_trans[:key] }
-
-          gdoc_trans_writer.write(current_row, key_lang, xliff_lang_value[:value])
-        end
-
-        dirty = true
-      elsif gdoc_trans[:value] != x_trans[:value]
-        gdoc_trans_writer.write(current_row, language, x_trans[:value])
-        SyncUtil.info_diff(file, language, 'Changing', x_trans)
-        dirty = true
-      end
-    end
-
-    dirty
+    g_trans_hash.merge(x_trans_hash)
   end
 
 end

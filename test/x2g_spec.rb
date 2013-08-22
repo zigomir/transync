@@ -2,23 +2,28 @@ require 'minitest/spec'
 require 'minitest/autorun'
 
 require_relative '../lib/transync/gdoc_trans/gdoc_trans'
+require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
+require_relative '../lib/transync/gdoc_trans/gdoc_trans_writer'
 require_relative '../lib/transync/sync/sync_util'
+require_relative '../lib/transync/sync/xliff_to_gdoc'
 require_relative '../lib/transync/xliff_trans/xliff_trans_reader'
 
 describe 'x2g' do
   before do
+    @file       = 'test'
     @path       = 'test/fixtures'
     @config     = GdocTrans::CONFIG
     @language   = 'en'
+    @languages  = %w(en de)
     SyncUtil.create_logger('xliff2gdoc_test')
   end
 
   it 'test if xliff files are valid' do
-    xliff_trans_reader = XliffTransReader.new(@path, 'test', @language, %w(en de))
+    xliff_trans_reader = XliffTransReader.new(@path, 'test', @language, @languages)
     valid = xliff_trans_reader.valid?
     valid.must_equal true
 
-    xliff_trans_reader = XliffTransReader.new(@path, 'validators', @language, %w(en de))
+    xliff_trans_reader = XliffTransReader.new(@path, 'validators', @language, @languages)
     valid = xliff_trans_reader.valid?
     valid.must_equal false, 'validators translations should not be valid, because we do not have all keys in german file.'
   end
@@ -30,5 +35,29 @@ describe 'x2g' do
     valid, _, all_trans = SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], @path, 'validators')
     valid.must_equal false, 'validators.de file is should have one key less then validators.en xliff file'
     all_trans[:translations].size.must_equal 4
+  end
+
+  it 'x2g sync should build correct new hash before writing it back to google doc' do
+    options = {
+      path:     @path,
+      file:     @file,
+      language: @language
+    }
+    xliff_to_gdoc = XliffToGdoc.new(options)
+    trans_hash = xliff_to_gdoc.build_new_hash(@language)
+
+    trans_hash[:file].must_equal @file
+    trans_hash[:language].must_equal @language
+    trans_hash[:translations].keys.size.must_equal 4
+
+    trans_hash[:translations]['title'].must_equal 'Title'
+    trans_hash[:translations]['round'].must_equal 'Round'
+    trans_hash[:translations]['end_test'].must_equal 'End test'
+    trans_hash[:translations]['end_test_2'].must_equal 'End test 2'
+
+    gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], @file)
+    gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet, @config['LANGUAGES'].length)
+    gdoc_trans_writer.get_language_column_index('en').must_equal 2
+    gdoc_trans_writer.get_language_column_index('DE').must_equal 3
   end
 end

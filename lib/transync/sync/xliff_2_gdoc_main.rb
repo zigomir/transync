@@ -31,9 +31,10 @@ class Xliff2GdocMain
         xliff_to_gdoc = XliffToGdoc.new(options)
         dirty = xliff_to_gdoc.sync
 
+        # TODO this gets now done in save method
         # save it back on google drive
-        gdoc_trans_writer.worksheet.save if dirty
-        SyncUtil.info_clean(file, language, 'was clean. Already has same keys and values inside GDoc') unless dirty
+        #gdoc_trans_writer.worksheet.save if dirty
+        #SyncUtil.info_clean(file, language, 'was clean. Already has same keys and values inside GDoc') unless dirty
       end
     end
   end

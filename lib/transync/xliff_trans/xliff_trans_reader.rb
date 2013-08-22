@@ -35,11 +35,9 @@ class XliffTransReader
   end
 
   # will go through each and find if any xliff is missing keys for translations
-  #def valid?(create = false)
   def valid?
     missing = 0
     missing_translation_text = GdocTrans::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
-    #all_translations_for_language = {file: @file, language: nil, translations: {}}
 
     self.get_translations[:translations].keys.each do |x_trans_key|
       self.languages.each do |key_lang|
@@ -60,11 +58,6 @@ class XliffTransReader
         end
       end
     end
-
-    #if missing > 0 and create
-    #  xliff_trans_writer = XliffTransWriter.new(path, file, all_translations_for_language)
-    #  xliff_trans_writer.save
-    #end
 
     missing == 0
   end
