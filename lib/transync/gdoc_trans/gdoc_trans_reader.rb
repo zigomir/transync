@@ -14,14 +14,15 @@ class GdocTransReader
   end
 
   def build_trans_hash(language = 'en')
-    trans_hash = { file: worksheet.title, language: language, translations: [] }
+    trans_hash = { file: worksheet.title, language: language, translations: {} }
 
     key_column = GdocTrans::WORKSHEET_COLUMNS[:key]
     language_column = GdocTrans::WORKSHEET_COLUMNS[language.to_sym]
 
     (GdocTrans::START_ROW..worksheet.num_rows).to_a.each do |row|
-      translation = { key: worksheet[row, key_column], value: worksheet[row, language_column] }
-      trans_hash[:translations] << translation
+      key   = worksheet[row, key_column]
+      value = worksheet[row, language_column]
+      trans_hash[:translations][key] = value
     end
 
     trans_hash

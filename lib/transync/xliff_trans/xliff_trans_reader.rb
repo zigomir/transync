@@ -14,17 +14,15 @@ class XliffTransReader
     data = {
       file: file,
       language: language,
-      translations: []
+      translations: {}
     }
 
     open_file do |doc|
-      # hacky hack, xliff is dirty as hell
       doc.remove_namespaces!
       doc.xpath('//trans-unit').each do |node|
-        data[:translations] << {
-          key: node.xpath('source').text,
-          value: node.xpath('target').text,
-        }
+        key   = node.xpath('source').text
+        value = node.xpath('target').text
+        data[:translations][key] = value
       end
     end
 
@@ -37,24 +35,24 @@ class XliffTransReader
     missing_translation_text = GdocTrans::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
     all_translations_for_language = {language: nil, translations: []}
 
-    self.get_translations[:translations].each do |x_trans|
+    self.get_translations[:translations].keys.each do |x_trans_key|
       self.languages.each do |key_lang|
         next if key_lang == language
 
         xliff_reader = XliffTransReader.new(self.dir, self.file, key_lang, self.languages)
         xliff_lang = xliff_reader.get_translations[:translations]
-        xliff_lang_value = xliff_lang.detect{ |xt| xt[:key] == x_trans[:key] }
+        xliff_lang_value = xliff_lang[x_trans_key]
 
         all_translations_for_language[:language] = key_lang
 
         if xliff_lang_value.nil?
-          p "#{file}.#{key_lang} is missing translation for key '#{x_trans[:key]}'" unless create
+          p "#{file}.#{key_lang} is missing translation for key '#{x_trans_key}'" unless create
           return false unless create
 
-          p "#{missing + 1}. #{file}.#{key_lang} was missing translation for key '#{x_trans[:key]}'."
+          p "#{missing + 1}. #{file}.#{key_lang} was missing translation for key '#{x_trans_key}'."
           all_translations_for_language[:translations] << {
-              key: x_trans[:key],
-              value: "#{missing_translation_text} - #{x_trans[:key]}"
+              key: x_trans_key[:key],
+              value: "#{missing_translation_text} - #{x_trans_key}"
           }
           missing += 1
         else

@@ -19,30 +19,32 @@ class GdocToXliff
     new_xliff_hash = {
       file: file,
       language: language,
-      translations: []
+      translations: {}
     }
 
     xliff_for_language = xliff_translations.detect{ |x| x[:language] == language }[:translations]
-    gdoc_tab_language[:translations].each do |gdoc_trans|
-      x_trans = xliff_for_language.detect{ |x| x[:key] == gdoc_trans[:key] }
+    gdoc_tab_language[:translations].keys.each do |trans_key|
+      trans_value = gdoc_tab_language[:translations][trans_key]
+      x_trans_value = xliff_for_language[trans_key]
 
       # whole key is missing
-      if x_trans.nil?
-        SyncUtil.info_diff(file, language, 'Adding', gdoc_trans)
+      if x_trans_value.nil?
+        SyncUtil.info_diff(file, language, 'Adding', trans_key, nil)
 
-        new_xliff_hash[:translations] << gdoc_trans
+        new_xliff_hash[:translations][trans_key] = trans_value
         dirty = true
-      elsif gdoc_trans[:value] != x_trans[:value]
-        SyncUtil.info_diff(file, language, 'Changing', gdoc_trans)
-
-        x_trans[:value] = gdoc_trans[:value]
-        new_xliff_hash[:translations] << x_trans
+      elsif trans_value != x_trans_value
+        SyncUtil.info_diff(file, language, 'Changing', x_trans_value, trans_value)
+        new_xliff_hash[:translations][trans_key] = trans_value
         dirty = true
       else
         # nothing new
-        new_xliff_hash[:translations] << gdoc_trans
+        new_xliff_hash[:translations][trans_key] = trans_value
       end
     end
+
+    # also merge keys that were missing in gdoc
+    new_xliff_hash[:translations] = xliff_for_language.merge(new_xliff_hash[:translations])
 
     return dirty, new_xliff_hash
   end

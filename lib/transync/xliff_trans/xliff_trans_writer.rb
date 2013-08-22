@@ -22,10 +22,10 @@ class XliffTransWriter
       xliff.file :'source-language' => language, :datatype => 'plaintext', :original => 'file.ext' do |file|
         file.body do |body|
 
-          translations.each do |trans|
-            body.tag! 'trans-unit', :id => trans[:key] do |trans_unit|
-              trans_unit.source trans[:key]
-              trans_unit.target trans[:value]
+          translations.keys.each do |trans_key|
+            body.tag! 'trans-unit', :id => trans_key do |trans_unit|
+              trans_unit.source trans_key
+              trans_unit.target translations[trans_key]
             end
           end
 
@@ -36,7 +36,7 @@ class XliffTransWriter
     File.open(file_path, 'w') { |file| file.write(xml.target!) }
   end
 
-private
+  private
 
   def file_path
     "#{path}/#{file}.#{language}.xliff"

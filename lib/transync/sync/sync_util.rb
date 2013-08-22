@@ -28,8 +28,9 @@ module SyncUtil
     SyncUtil.log_and_puts(msg)
   end
 
-  def self.info_diff(file, language, operation, trans)
-    msg = "#{file} (#{language}) - #{operation}: '#{trans[:key]}' => '#{trans[:value]}'"
+  def self.info_diff(file, language, operation, trans_key, trans_value)
+    msg = "#{file} (#{language}) - #{operation}: '#{trans_key}'"
+    msg += " to '#{trans_value}'" unless trans_value.nil?
     SyncUtil.log_and_puts(msg)
   end
 
