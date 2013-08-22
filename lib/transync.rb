@@ -40,6 +40,7 @@ module Transync
           xliff_trans_writer.save
         end
       end
+      p 'All xliff files should now have all the keys!'
     end
   end
 

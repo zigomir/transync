@@ -39,9 +39,8 @@ describe 'x2g' do
 
   it 'x2g sync should build correct new hash before writing it back to google doc' do
     options = {
-      path:     @path,
-      file:     @file,
-      language: @language
+      path: @path,
+      file: @file
     }
     xliff_to_gdoc = XliffToGdoc.new(options)
     trans_hash = xliff_to_gdoc.build_new_hash(@language)
@@ -56,7 +55,7 @@ describe 'x2g' do
     trans_hash[:translations]['end_test_2'].must_equal 'End test 2'
 
     gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], @file)
-    gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet, @config['LANGUAGES'].length)
+    gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet)
     gdoc_trans_writer.get_language_column_index('en').must_equal 2
     gdoc_trans_writer.get_language_column_index('DE').must_equal 3
   end

@@ -6,6 +6,11 @@ require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/sync/sync_util'
 require_relative '../lib/transync/sync/gdoc_to_xliff'
 
+# Expects this data in test worksheet
+# Key	      EN	    DE
+# title	    Title	  Titel
+# round	    Round	  Rund
+# end_test	meh	    xxx
 describe 'g2x' do
   before do
     @file = 'test' # file or worksheet title aka spreadsheet tab
@@ -28,7 +33,7 @@ describe 'g2x' do
   end
 
   it 'g2x sync should build new hash before writing it to xliff' do
-    xliff_translations = SyncUtil::check_and_get_xliff_files(%w(en), @path, @file)
+    _, xliff_translations = SyncUtil::check_and_get_xliff_files(%w(en), @path, @file)
     xliff_translations[0][:file].must_equal @file
     xliff_translations[0][:language].must_equal @language
     xliff_translations[0][:translations].keys.size.must_equal 4

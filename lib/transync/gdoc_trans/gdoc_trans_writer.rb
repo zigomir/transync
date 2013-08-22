@@ -3,13 +3,14 @@ require_relative 'gdoc_trans'
 
 class GdocTransWriter
 
-  def initialize(worksheet, all_languages)
-    @worksheet     = worksheet
-    @all_languages = all_languages
+  def initialize(worksheet)
+    @worksheet = worksheet
   end
 
   def write(language, trans_hash)
     lang_column = get_language_column_index(language)
+    abort("Language (#{language}) not found in worksheet (#{@worksheet.title})!") if lang_column == 0
+
     row = 2
 
     trans_hash[:translations].keys.each do |trans_key|
@@ -23,7 +24,7 @@ class GdocTransWriter
   end
 
   def get_language_column_index(language)
-    (2..@all_languages + 1).each do |column|
+    (2..@worksheet.num_cols).each do |column|
       return column if @worksheet[1, column].downcase == language.downcase
     end
     0

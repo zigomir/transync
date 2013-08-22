@@ -7,14 +7,14 @@ class Xliff2GdocMain
   attr_reader :path, :config
 
   def initialize(path)
-    @path = path
+    @path   = path
     @config = GdocTrans::CONFIG
     SyncUtil.create_logger('xliff2gdoc')
   end
 
   def run
     @config['FILES'].each do |file|
-      valid, xliff_translations = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], path, file)
+      valid, _ = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], @path, file)
       abort('Fix your Xliff translations first!') unless valid
 
       gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], file)
@@ -22,19 +22,12 @@ class Xliff2GdocMain
 
       @config['LANGUAGES'].each do |language|
         options = {
-          xliff_translations: xliff_translations,
-          gdoc_trans_reader: gdoc_trans_reader,
-          gdoc_trans_writer: gdoc_trans_writer,
-          language: language,
-          languages: @config['LANGUAGES']
+          path: @path,
+          file: file
         }
         xliff_to_gdoc = XliffToGdoc.new(options)
-        dirty = xliff_to_gdoc.sync
-
-        # TODO this gets now done in save method
-        # save it back on google drive
-        #gdoc_trans_writer.worksheet.save if dirty
-        #SyncUtil.info_clean(file, language, 'was clean. Already has same keys and values inside GDoc') unless dirty
+        trans_hash = xliff_to_gdoc.build_new_hash(language)
+        gdoc_trans_writer.write(language, trans_hash)
       end
     end
   end
