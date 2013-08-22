@@ -3,6 +3,7 @@ require_relative '../xliff_trans/xliff_trans_reader'
 
 module SyncUtil
 
+  # TODO refactor this so we can only return one language
   def self.check_and_get_xliff_files(languages, path, file, create = false)
     xliff_translations = []
     added = false

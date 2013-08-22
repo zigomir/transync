@@ -12,6 +12,7 @@ class GdocTransWriter
     @worksheet[row, GdocTrans::WORKSHEET_COLUMNS[column.to_sym]] = data
   end
 
+  # TODO debug/fix this one because it's adding new lines
   def shift_up(old_row_num, rows_count)
     # shift up that many times we're missing till the end
     (old_row_num..rows_count).to_a.each do |new_row|

@@ -1,4 +1,3 @@
-require 'yaml'
 require_relative '../gdoc_trans/gdoc_trans_reader'
 require_relative '../xliff_trans/xliff_trans_writer'
 require_relative 'gdoc_to_xliff'

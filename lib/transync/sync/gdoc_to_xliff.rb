@@ -14,11 +14,11 @@ class GdocToXliff
   def sync
     dirty = false
     gdoc_tab_language = gdoc_trans_reader.build_trans_hash(language)
-    file = gdoc_tab_language[:title]
+    file = gdoc_tab_language[:file]
 
     new_xliff_hash = {
-      language: language,
       file: file,
+      language: language,
       translations: []
     }
 

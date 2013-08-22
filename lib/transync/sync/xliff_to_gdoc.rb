@@ -19,7 +19,7 @@ class XliffToGdoc
   def sync
     gdoc_tab_language = gdoc_trans_reader.build_trans_hash(language)
     dirty = false
-    file = gdoc_tab_language[:title]
+    file = gdoc_tab_language[:file]
 
     xliff_for_language = xliff_translations.detect{ |x| x[:language] == language }
     xliff_for_language[:translations].each_with_index do |x_trans, index|

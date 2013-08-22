@@ -14,7 +14,7 @@ class GdocTransReader
   end
 
   def build_trans_hash(language = 'en')
-    trans_hash = { title: worksheet.title, language: language, translations: [] }
+    trans_hash = { file: worksheet.title, language: language, translations: [] }
 
     key_column = GdocTrans::WORKSHEET_COLUMNS[:key]
     language_column = GdocTrans::WORKSHEET_COLUMNS[language.to_sym]

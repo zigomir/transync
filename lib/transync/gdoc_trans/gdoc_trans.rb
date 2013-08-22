@@ -1,3 +1,5 @@
+require 'yaml'
+
 module GdocTrans
   WORKSHEET_COLUMNS = { key: 1 }
   START_ROW = 2

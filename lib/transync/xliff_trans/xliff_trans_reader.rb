@@ -12,6 +12,7 @@ class XliffTransReader
 
   def get_translations
     data = {
+      file: file,
       language: language,
       translations: []
     }
