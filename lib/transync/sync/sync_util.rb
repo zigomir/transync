@@ -4,23 +4,22 @@ require_relative '../xliff_trans/xliff_trans_reader'
 module SyncUtil
 
   # TODO refactor this so we can only return one language
-  def self.check_and_get_xliff_files(languages, path, file, create = false)
+  def self.check_and_get_xliff_files(languages, path, file)
+    valid = true
     xliff_translations = []
-    added = false
+    all_translations_for_language = {}
 
     languages.each do |language|
       xliff_reader = XliffTransReader.new(path, file, language, languages)
-      if xliff_reader.valid?(create)
+      if xliff_reader.valid?
         xliff_translations << xliff_reader.get_translations
       else
-        added = true if create
-        abort('Fix your Xliff translations first!') unless create
+        valid = false
+        all_translations_for_language = xliff_reader.all_translations_for_language
       end
     end
 
-    p 'Missing translations were added!' if create and added
-
-    xliff_translations
+    return valid, xliff_translations, all_translations_for_language
   end
 
   def self.info_clean(file, language, message)

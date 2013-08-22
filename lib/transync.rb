@@ -32,7 +32,13 @@ module Transync
 
     if mode == 'update'
       GdocTrans::CONFIG['FILES'].each do |file|
-        SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file, true)
+        valid, _, all_translations_for_language =
+          SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file)
+
+        unless valid
+          xliff_trans_writer = XliffTransWriter.new(path, file, all_translations_for_language)
+          xliff_trans_writer.save
+        end
       end
     end
   end

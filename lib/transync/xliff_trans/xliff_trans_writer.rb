@@ -7,10 +7,10 @@ class XliffTransWriter
                 :language
 
   def initialize(path, file, data)
-    @path = path
-    @file = file
+    @path     = path
+    @file     = file
+    @data     = data
     @language = data[:language]
-    @data = data
   end
 
   def save
@@ -36,7 +36,7 @@ class XliffTransWriter
     File.open(file_path, 'w') { |file| file.write(xml.target!) }
   end
 
-  private
+private
 
   def file_path
     "#{path}/#{file}.#{language}.xliff"

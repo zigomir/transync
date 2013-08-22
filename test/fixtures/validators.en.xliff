@@ -6,6 +6,10 @@
                 <source>title</source>
                 <target>Titel</target>
             </trans-unit>
+            <trans-unit id="end_test_2">
+                <source>end_test_2</source>
+                <target>End test 2</target>
+            </trans-unit>
             <trans-unit id="round">
                 <source>round</source>
                 <target>Rund</target>

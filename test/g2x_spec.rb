@@ -16,7 +16,7 @@ describe 'g2x' do
     SyncUtil.create_logger('gdoc2xliff_test')
   end
 
-  it 'should build correct trans hash' do
+  it 'google doc translation reader should build correct trans hash' do
     trans_hash = @gdoc_trans_reader.build_trans_hash(@language)
     trans_hash[:file].must_equal @file
     trans_hash[:language].must_equal @language
@@ -27,7 +27,7 @@ describe 'g2x' do
     trans_hash[:translations]['end_test'].must_equal 'meh'
   end
 
-  it 'should build correct new xliff hash' do
+  it 'g2x sync should build new hash before writing it to xliff' do
     xliff_translations = SyncUtil::check_and_get_xliff_files(%w(en), @path, @file)
     xliff_translations[0][:file].must_equal @file
     xliff_translations[0][:language].must_equal @language
