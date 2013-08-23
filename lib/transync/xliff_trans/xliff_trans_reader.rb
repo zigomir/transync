@@ -35,7 +35,7 @@ class XliffTransReader
   # will go through each and find if any xliff is missing keys for translations
   def valid?
     missing = 0
-    missing_translation_text = Transync::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
+    missing_translation_text = TransyncConfig::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
 
     self.translations(self.languages.first)[:translations].keys.each do |x_trans_key|
       self.languages.each do |key_lang|

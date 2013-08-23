@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Transync
+module TransyncConfig
   WORKSHEET_COLUMNS = { key: 1 }
   START_ROW = 2
 

@@ -5,7 +5,7 @@ class XliffToGdoc
   def initialize(options = {})
     @path   = options[:path]
     @file   = options[:file]
-    @config = Transync::CONFIG
+    @config = TransyncConfig::CONFIG
   end
 
   def build_new_hash(language)

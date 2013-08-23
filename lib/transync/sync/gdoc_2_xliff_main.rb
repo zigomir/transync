@@ -6,7 +6,7 @@ class Gdoc2XliffMain
 
   def initialize(path)
     @path   = path
-    @config = Transync::CONFIG
+    @config = TransyncConfig::CONFIG
     SyncUtil.create_logger('gdoc2xliff')
   end
 

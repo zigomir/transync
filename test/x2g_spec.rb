@@ -1,7 +1,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require_relative '../lib/transync/transync'
+require_relative '../lib/transync/transync_config'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_writer'
 require_relative '../lib/transync/sync/sync_util'
@@ -12,7 +12,7 @@ describe 'x2g' do
   before do
     @file       = 'test'
     @path       = 'test/fixtures'
-    @config     = Transync::CONFIG
+    @config     = TransyncConfig::CONFIG
     @language   = 'en'
     @languages  = %w(en de)
     SyncUtil.create_logger('xliff2gdoc_test')
@@ -29,10 +29,10 @@ describe 'x2g' do
   end
 
   it 'test if all keys in all language files are presented' do
-    valid, _, _ = SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], @path, 'test')
+    valid, _, _ = SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], @path, 'test')
     valid.must_equal true, 'test file should have all keys in both languages'
 
-    valid, _, all_trans = SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], @path, 'validators')
+    valid, _, all_trans = SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], @path, 'validators')
     valid.must_equal false, 'validators.de file is should have one key less then validators.en xliff file'
     all_trans[:translations].size.must_equal 4
   end

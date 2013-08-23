@@ -1,7 +1,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require_relative '../lib/transync/transync'
+require_relative '../lib/transync/transync_config'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/sync/sync_util'
 require_relative '../lib/transync/sync/gdoc_to_xliff'
@@ -15,7 +15,7 @@ describe 'g2x' do
   before do
     @file = 'test' # file or worksheet title aka spreadsheet tab
     @path = 'test/fixtures'
-    @config = Transync::CONFIG
+    @config = TransyncConfig::CONFIG
     @gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], @file)
     @language = 'en'
     SyncUtil.create_logger('gdoc2xliff_test')
