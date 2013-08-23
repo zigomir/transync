@@ -7,7 +7,7 @@ class XliffTransWriter
     @file = file
   end
 
-  def save(language, trans_hash)
+  def write(language, trans_hash)
     translations = trans_hash[:translations]
 
     xml = Builder::XmlMarkup.new( :indent => 4 )
@@ -33,7 +33,7 @@ class XliffTransWriter
 private
 
   def file_path(language)
-    "#{path}/#{file}.#{language}.xliff"
+    "#{@path}/#{@file}.#{language}.xliff"
   end
 
 end

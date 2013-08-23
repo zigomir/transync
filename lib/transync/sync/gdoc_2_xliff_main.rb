@@ -12,10 +12,10 @@ class Gdoc2XliffMain
 
   def run
     @config['FILES'].each do |file|
-      valid, _ = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], path, file)
+      valid, _ = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], @path, file)
       abort('Fix your Xliff translations first!') unless valid
 
-      xliff_trans_writer = XliffTransWriter.new(path, file)
+      xliff_trans_writer = XliffTransWriter.new(@path, file)
 
       @config['LANGUAGES'].each do |language|
         options = {
