@@ -1,52 +1,23 @@
-require_relative 'sync_util'
+# TODO GdocToXliff and XliffToGdoc are the same now -> merge them
 
 class GdocToXliff
-  attr_accessor :xliff_translations,
-                :gdoc_trans_reader,
-                :language
 
   def initialize(options = {})
-    self.xliff_translations = options[:xliff_translations]
-    self.gdoc_trans_reader = options[:gdoc_trans_reader]
-    self.language = options[:language]
+    @path   = options[:path]
+    @file   = options[:file]
+    @config = Transync::CONFIG
   end
 
-  def sync
-    dirty = false
-    gdoc_tab_language = gdoc_trans_reader.build_trans_hash(language)
-    file = gdoc_tab_language[:file]
+  def build_new_hash(language)
+    gdoc_trans_reader  = GdocTransReader.new(@config['GDOC'], @file)
+    xliff_trans_reader = XliffTransReader.new(@path, @file, nil) # we dont need languages for translations method
 
-    new_xliff_hash = {
-      file: file,
-      language: language,
-      translations: {}
-    }
+    g_trans_hash = gdoc_trans_reader.translations(language)
+    x_trans_hash = xliff_trans_reader.translations(language)
 
-    xliff_for_language = xliff_translations.detect{ |x| x[:language] == language }[:translations]
-    gdoc_tab_language[:translations].keys.each do |trans_key|
-      trans_value = gdoc_tab_language[:translations][trans_key]
-      x_trans_value = xliff_for_language[trans_key]
-
-      # whole key is missing
-      if x_trans_value.nil?
-        SyncUtil.info_diff(file, language, 'Adding', trans_key, nil)
-
-        new_xliff_hash[:translations][trans_key] = trans_value
-        dirty = true
-      elsif trans_value != x_trans_value
-        SyncUtil.info_diff(file, language, 'Changing', x_trans_value, trans_value)
-        new_xliff_hash[:translations][trans_key] = trans_value
-        dirty = true
-      else
-        # nothing new
-        new_xliff_hash[:translations][trans_key] = trans_value
-      end
-    end
-
-    # also merge keys that were missing in gdoc
-    new_xliff_hash[:translations] = xliff_for_language.merge(new_xliff_hash[:translations])
-
-    return dirty, new_xliff_hash
+    # We need to merge on translations hash, not whole hash since it will only merge first level
+    merged_translations = x_trans_hash[:translations].merge(g_trans_hash[:translations])
+    {file: @file, language: language, translations: merged_translations}
   end
 
 end

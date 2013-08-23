@@ -7,7 +7,7 @@ module Transync
 
   def self.run(mode)
     FileUtils.mkdir('.transync_log') unless Dir.exist?('.transync_log')
-    path = GdocTrans::CONFIG['XLIFF_FILES_PATH']
+    path = Transync::CONFIG['XLIFF_FILES_PATH']
 
     if mode == 'x2g'
       x2g = Xliff2GdocMain.new(path)
@@ -25,20 +25,21 @@ module Transync
     end
 
     if mode == 'test'
-      GdocTrans::CONFIG['FILES'].each do |file|
-        SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file)
+      Transync::CONFIG['FILES'].each do |file|
+        SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], path, file)
       end
     end
 
     if mode == 'update'
-      GdocTrans::CONFIG['FILES'].each do |file|
+      Transync::CONFIG['FILES'].each do |file|
         valid, _, all_translations_for_language =
-          SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], path, file)
+          SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], path, file)
 
-        unless valid
-          xliff_trans_writer = XliffTransWriter.new(path, file, all_translations_for_language)
-          xliff_trans_writer.save
-        end
+        #unless valid
+        #  xliff_trans_writer = XliffTransWriter.new(path, file)
+        #  # TODO save for each language
+        #  xliff_trans_writer.save(language, trans_hash)
+        #end
       end
       p 'All xliff files should now have all the keys!'
     end

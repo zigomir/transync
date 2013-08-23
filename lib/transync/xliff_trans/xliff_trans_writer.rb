@@ -1,20 +1,14 @@
 require 'builder'
 
 class XliffTransWriter
-  attr_accessor :data,
-                :path,
-                :file,
-                :language
 
-  def initialize(path, file, data)
-    @path     = path
-    @file     = file
-    @data     = data
-    @language = data[:language]
+  def initialize(path, file)
+    @path = path
+    @file = file
   end
 
-  def save
-    translations = data[:translations]
+  def save(language, trans_hash)
+    translations = trans_hash[:translations]
 
     xml = Builder::XmlMarkup.new( :indent => 4 )
     xml.instruct! :xml, :encoding => 'UTF-8'
@@ -33,12 +27,12 @@ class XliffTransWriter
       end
     end
 
-    File.open(file_path, 'w') { |file| file.write(xml.target!) }
+    File.open(file_path(language), 'w') { |file| file.write(xml.target!) }
   end
 
 private
 
-  def file_path
+  def file_path(language)
     "#{path}/#{file}.#{language}.xliff"
   end
 

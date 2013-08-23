@@ -4,11 +4,10 @@ require_relative 'xliff_to_gdoc'
 require_relative 'sync_util'
 
 class Xliff2GdocMain
-  attr_reader :path, :config
 
   def initialize(path)
     @path   = path
-    @config = GdocTrans::CONFIG
+    @config = Transync::CONFIG
     SyncUtil.create_logger('xliff2gdoc')
   end
 

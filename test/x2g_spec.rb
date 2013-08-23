@@ -1,7 +1,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require_relative '../lib/transync/gdoc_trans/gdoc_trans'
+require_relative '../lib/transync/transync'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_writer'
 require_relative '../lib/transync/sync/sync_util'
@@ -12,27 +12,27 @@ describe 'x2g' do
   before do
     @file       = 'test'
     @path       = 'test/fixtures'
-    @config     = GdocTrans::CONFIG
+    @config     = Transync::CONFIG
     @language   = 'en'
     @languages  = %w(en de)
     SyncUtil.create_logger('xliff2gdoc_test')
   end
 
   it 'test if xliff files are valid' do
-    xliff_trans_reader = XliffTransReader.new(@path, 'test', @language, @languages)
+    xliff_trans_reader = XliffTransReader.new(@path, 'test', @languages)
     valid = xliff_trans_reader.valid?
     valid.must_equal true
 
-    xliff_trans_reader = XliffTransReader.new(@path, 'validators', @language, @languages)
+    xliff_trans_reader = XliffTransReader.new(@path, 'validators', @languages)
     valid = xliff_trans_reader.valid?
     valid.must_equal false, 'validators translations should not be valid, because we do not have all keys in german file.'
   end
 
   it 'test if all keys in all language files are presented' do
-    valid, _, _ = SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], @path, 'test')
+    valid, _, _ = SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], @path, 'test')
     valid.must_equal true, 'test file should have all keys in both languages'
 
-    valid, _, all_trans = SyncUtil::check_and_get_xliff_files(GdocTrans::CONFIG['LANGUAGES'], @path, 'validators')
+    valid, _, all_trans = SyncUtil::check_and_get_xliff_files(Transync::CONFIG['LANGUAGES'], @path, 'validators')
     valid.must_equal false, 'validators.de file is should have one key less then validators.en xliff file'
     all_trans[:translations].size.must_equal 4
   end

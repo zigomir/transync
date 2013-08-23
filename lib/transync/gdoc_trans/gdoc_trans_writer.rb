@@ -1,5 +1,4 @@
 require 'google_drive'
-require_relative 'gdoc_trans'
 
 class GdocTransWriter
 

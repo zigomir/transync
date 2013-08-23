@@ -10,9 +10,9 @@ module SyncUtil
     all_translations_for_language = {}
 
     languages.each do |language|
-      xliff_reader = XliffTransReader.new(path, file, language, languages)
+      xliff_reader = XliffTransReader.new(path, file, languages)
       if xliff_reader.valid?
-        xliff_translations << xliff_reader.get_translations
+        xliff_translations << xliff_reader.translations(language)
       else
         valid = false
         all_translations_for_language = xliff_reader.all_translations_for_language

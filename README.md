@@ -47,9 +47,9 @@ Updating GDoc from our xliff files. It won't delete any key, it will only add ne
 
 Gem docs available at http://gimite.net/doc/google-drive-ruby
 
-# Issues to fix
+# TODO
 
-- g2x will overwrite keys in xliff files
-- x2g will skip one line in google doc
-- create Classes to hold data + methods (sync keys on both sides)
-- tests (minitest)
+- much more tests, edge cases
+- speed up, I think we are connecting too much
+- more OOP
+- remove all duplicated code!

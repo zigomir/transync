@@ -6,7 +6,7 @@ class Init
 
   def initialize(path)
     @path = path
-    @config = GdocTrans::CONFIG
+    @config = Transync::CONFIG
     @gdoc_access = @config['GDOC']
   end
 

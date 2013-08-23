@@ -1,24 +1,23 @@
-require_relative '../gdoc_trans/gdoc_trans_reader'
-require_relative '../xliff_trans/xliff_trans_reader'
+# TODO GdocToXliff and XliffToGdoc are the same now -> merge them
 
 class XliffToGdoc
 
   def initialize(options = {})
     @path   = options[:path]
     @file   = options[:file]
-    @config = GdocTrans::CONFIG
+    @config = Transync::CONFIG
   end
 
   def build_new_hash(language)
     gdoc_trans_reader  = GdocTransReader.new(@config['GDOC'], @file)
-    xliff_trans_reader = XliffTransReader.new(@path, @file, language, nil) # we dont need languages for get_translations method
+    xliff_trans_reader = XliffTransReader.new(@path, @file, nil) # we dont need languages for translations method
 
-    # TODO - freaking inconsistent API as hell
-    # both readers should have same method name for getting translations, and both should be limited to a language
-    g_trans_hash = gdoc_trans_reader.build_trans_hash(language)
-    x_trans_hash = xliff_trans_reader.get_translations
+    g_trans_hash = gdoc_trans_reader.translations(language)
+    x_trans_hash = xliff_trans_reader.translations(language)
 
-    g_trans_hash.merge(x_trans_hash)
+    # We need to merge on translations hash, not whole hash since it will only merge first level
+    merged_translations = g_trans_hash[:translations].merge(x_trans_hash[:translations])
+    {file: @file, language: language, translations: merged_translations}
   end
 
 end
