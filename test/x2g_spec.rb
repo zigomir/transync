@@ -5,7 +5,7 @@ require_relative '../lib/transync/transync_config'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_writer'
 require_relative '../lib/transync/sync/sync_util'
-require_relative '../lib/transync/sync/xliff_to_gdoc'
+require_relative '../lib/transync/sync/translation_sync'
 require_relative '../lib/transync/xliff_trans/xliff_trans_reader'
 
 describe 'x2g' do
@@ -41,8 +41,8 @@ describe 'x2g' do
       path: @path,
       file: @file
     }
-    xliff_to_gdoc = XliffToGdoc.new(options)
-    trans_hash = xliff_to_gdoc.build_new_hash(@language)
+    xliff_to_gdoc = TranslationSync.new(options)
+    trans_hash = xliff_to_gdoc.sync(@language, 'x2g')
 
     trans_hash[:file].must_equal @file
     trans_hash[:language].must_equal @language

@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require_relative '../lib/transync/transync_config'
 require_relative '../lib/transync/gdoc_trans/gdoc_trans_reader'
 require_relative '../lib/transync/sync/sync_util'
-require_relative '../lib/transync/sync/gdoc_to_xliff'
+require_relative '../lib/transync/sync/translation_sync'
 
 # Expects this data in test worksheet
 # Key	      EN	    DE
@@ -42,8 +42,8 @@ describe 'g2x' do
       file: @file
     }
 
-    gdoc_to_xliff = GdocToXliff.new(options)
-    new_xliff_hash = gdoc_to_xliff.build_new_hash(@language)
+    gdoc_to_xliff = TranslationSync.new(options)
+    new_xliff_hash = gdoc_to_xliff.sync(@language, 'g2x')
 
     new_xliff_hash[:file].must_equal @file
     new_xliff_hash[:language].must_equal @language

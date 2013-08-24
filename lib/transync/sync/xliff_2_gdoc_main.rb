@@ -1,7 +1,7 @@
+require_relative 'sync_util'
+require_relative 'translation_sync'
 require_relative '../gdoc_trans/gdoc_trans_reader'
 require_relative '../gdoc_trans/gdoc_trans_writer'
-require_relative 'xliff_to_gdoc'
-require_relative 'sync_util'
 
 class Xliff2GdocMain
 
@@ -24,8 +24,8 @@ class Xliff2GdocMain
           path: @path,
           file: file
         }
-        xliff_to_gdoc = XliffToGdoc.new(options)
-        trans_hash = xliff_to_gdoc.build_new_hash(language)
+        xliff_to_gdoc = TranslationSync.new(options)
+        trans_hash = xliff_to_gdoc.sync(language, 'x2g')
         gdoc_trans_writer.write(language, trans_hash)
       end
     end

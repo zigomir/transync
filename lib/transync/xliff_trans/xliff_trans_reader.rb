@@ -14,11 +14,7 @@ class XliffTransReader
   end
 
   def translations(language)
-    data = {
-      file: file,
-      language: language,
-      translations: {}
-    }
+    data = { file: file, language: language, translations: {} }
 
     open_file(language) do |doc|
       doc.remove_namespaces!
