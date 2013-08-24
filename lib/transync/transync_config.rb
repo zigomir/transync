@@ -1,11 +1,14 @@
 require 'yaml'
+require 'google_drive'
 
 module TransyncConfig
   WORKSHEET_COLUMNS = { key: 1 }
   START_ROW = 2
 
   begin
-    CONFIG = YAML.load(File.open('transync.yml'))
+    CONFIG     = YAML.load(File.open('transync.yml'))
+    session    = GoogleDrive.login(CONFIG['GDOC']['email'], CONFIG['GDOC']['password'])
+    WORKSHEETS = session.spreadsheet_by_key(CONFIG['GDOC']['key']).worksheets
   rescue
     p 'File transync.yml does not exist'
     exit(1)

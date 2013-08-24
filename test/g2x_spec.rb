@@ -15,14 +15,13 @@ describe 'g2x' do
   before do
     @file = 'test' # file or worksheet title aka spreadsheet tab
     @path = 'test/fixtures'
-    @config = TransyncConfig::CONFIG
-    @gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], @file)
     @language = 'en'
     SyncUtil.create_logger('gdoc2xliff_test')
   end
 
   it 'google doc translation reader should build correct trans hash' do
-    trans_hash = @gdoc_trans_reader.translations(@language)
+    gdoc_trans_reader = GdocTransReader.new(@file)
+    trans_hash = gdoc_trans_reader.translations(@language)
     trans_hash[:file].must_equal @file
     trans_hash[:language].must_equal @language
     trans_hash[:translations].keys.size.must_equal 3

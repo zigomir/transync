@@ -10,11 +10,10 @@ require_relative '../lib/transync/xliff_trans/xliff_trans_reader'
 
 describe 'x2g' do
   before do
-    @file       = 'test'
-    @path       = 'test/fixtures'
-    @config     = TransyncConfig::CONFIG
-    @language   = 'en'
-    @languages  = %w(en de)
+    @file      = 'test'
+    @path      = 'test/fixtures'
+    @language  = 'en'
+    @languages = %w(en de)
     SyncUtil.create_logger('xliff2gdoc_test')
   end
 
@@ -54,7 +53,7 @@ describe 'x2g' do
     trans_hash[:translations]['end_test'].must_equal 'End test'
     trans_hash[:translations]['end_test_2'].must_equal 'End test 2'
 
-    gdoc_trans_reader = GdocTransReader.new(@config['GDOC'], @file)
+    gdoc_trans_reader = GdocTransReader.new(@file)
     gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet)
     gdoc_trans_writer.get_language_column_index('en').must_equal 2
     gdoc_trans_writer.get_language_column_index('DE').must_equal 3

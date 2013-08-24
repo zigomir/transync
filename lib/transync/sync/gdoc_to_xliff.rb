@@ -3,13 +3,12 @@
 class GdocToXliff
 
   def initialize(options = {})
-    @path   = options[:path]
-    @file   = options[:file]
-    @config = TransyncConfig::CONFIG
+    @path = options[:path]
+    @file = options[:file]
   end
 
   def build_new_hash(language)
-    gdoc_trans_reader  = GdocTransReader.new(@config['GDOC'], @file)
+    gdoc_trans_reader  = GdocTransReader.new(@file)
     xliff_trans_reader = XliffTransReader.new(@path, @file, nil) # we dont need languages for translations method
 
     g_trans_hash = gdoc_trans_reader.translations(language)
