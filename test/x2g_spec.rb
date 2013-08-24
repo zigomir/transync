@@ -14,7 +14,7 @@ describe 'x2g' do
     @path      = 'test/fixtures'
     @language  = 'en'
     @languages = %w(en de)
-    SyncUtil.create_logger('xliff2gdoc_test')
+    SyncUtil.create_logger('x2g_test')
   end
 
   it 'test if xliff files are valid' do
@@ -37,12 +37,8 @@ describe 'x2g' do
   end
 
   it 'x2g sync should build correct new hash before writing it back to google doc' do
-    options = {
-      path: @path,
-      file: @file
-    }
-    xliff_to_gdoc = TranslationSync.new(options)
-    trans_hash = xliff_to_gdoc.sync(@language, 'x2g')
+    trans_sync = TranslationSync.new(@path, 'x2g', @file)
+    trans_hash = trans_sync.sync(@language, 'x2g')
 
     trans_hash[:file].must_equal @file
     trans_hash[:language].must_equal @language

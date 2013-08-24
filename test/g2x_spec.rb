@@ -13,10 +13,10 @@ require_relative '../lib/transync/sync/translation_sync'
 # end_test	meh	    xxx
 describe 'g2x' do
   before do
-    @file = 'test' # file or worksheet title aka spreadsheet tab
-    @path = 'test/fixtures'
+    @file     = 'test' # file or worksheet title aka spreadsheet tab
+    @path     = 'test/fixtures'
     @language = 'en'
-    SyncUtil.create_logger('gdoc2xliff_test')
+    SyncUtil.create_logger('g2x_test')
   end
 
   it 'google doc translation reader should build correct trans hash' do
@@ -37,13 +37,8 @@ describe 'g2x' do
     xliff_translations[0][:language].must_equal @language
     xliff_translations[0][:translations].keys.size.must_equal 4
 
-    options = {
-      path: @path,
-      file: @file
-    }
-
-    gdoc_to_xliff = TranslationSync.new(options)
-    new_xliff_hash = gdoc_to_xliff.sync(@language, 'g2x')
+    trans_sync     = TranslationSync.new(@path, 'g2x', @file)
+    new_xliff_hash = trans_sync.sync(@language, 'g2x')
 
     new_xliff_hash[:file].must_equal @file
     new_xliff_hash[:language].must_equal @language
