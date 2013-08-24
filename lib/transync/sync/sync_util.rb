@@ -3,23 +3,22 @@ require_relative '../xliff_trans/xliff_trans_reader'
 
 module SyncUtil
 
-  def self.check_and_get_xliff_files(languages, path, file, create = false)
+  def self.check_and_get_xliff_files(languages, path, file)
+    valid = true
     xliff_translations = []
-    added = false
+    all_translations_for_language = {}
 
     languages.each do |language|
-      xliff_reader = XliffTransReader.new(path, file, language, languages)
-      if xliff_reader.valid?(create)
-        xliff_translations << xliff_reader.get_translations
+      xliff_reader = XliffTransReader.new(path, file, languages)
+      if xliff_reader.valid?
+        xliff_translations << xliff_reader.translations(language)
       else
-        added = true if create
-        abort('Fix your Xliff translations first!') unless create
+        valid = false
+        all_translations_for_language = xliff_reader.all_translations_for_language
       end
     end
 
-    p 'Missing translations were added!' if create and added
-
-    xliff_translations
+    return valid, xliff_translations, all_translations_for_language
   end
 
   def self.info_clean(file, language, message)
@@ -27,8 +26,9 @@ module SyncUtil
     SyncUtil.log_and_puts(msg)
   end
 
-  def self.info_diff(file, language, operation, trans)
-    msg = "#{file} (#{language}) - #{operation}: '#{trans[:key]}' => '#{trans[:value]}'"
+  def self.info_diff(file, language, operation, trans_key, trans_value)
+    msg = "#{file} (#{language}) - #{operation}: '#{trans_key}'"
+    msg += " to '#{trans_value}'" unless trans_value.nil?
     SyncUtil.log_and_puts(msg)
   end
 
@@ -38,7 +38,6 @@ module SyncUtil
   end
 
   def self.create_logger(direction)
-    # gdoc2xliff or xliff2gdoc
     @logger = Logger.new(".transync_log/#{direction}.log", 'monthly')
   end
 
