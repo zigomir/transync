@@ -7,7 +7,8 @@ class XliffTransWriter
     @file = file
   end
 
-  def write(language, trans_hash)
+  def write(trans_hash)
+    language     = trans_hash[:language]
     translations = trans_hash[:translations]
 
     xml = Builder::XmlMarkup.new( :indent => 4 )

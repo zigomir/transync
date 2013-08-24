@@ -23,10 +23,10 @@ class TranslationSync
         if direction == 'x2g'
           gdoc_trans_reader = GdocTransReader.new(file)
           gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet)
-          gdoc_trans_writer.write(language, trans_hash)
+          gdoc_trans_writer.write(trans_hash)
         else
           xliff_trans_writer = XliffTransWriter.new(@path, file)
-          xliff_trans_writer.write(language, trans_hash)
+          xliff_trans_writer.write(trans_hash)
         end
       end
     end

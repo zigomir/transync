@@ -1,18 +1,15 @@
-require_relative '../gdoc_trans/gdoc_trans_writer'
-
 class Init
-  attr_reader :path, :config
 
   def initialize(path)
-    @path = path
+    @path   = path
     @config = TransyncConfig::CONFIG
   end
 
   def run
     @config['FILES'].each do |file|
-      worksheet = TransyncConfig::WORKSHEETS.select { |s| s.title == file }.first
+      worksheet = TransyncConfig::WORKSHEETS.detect{ |s| s.title == file }
       if worksheet.nil?
-        worksheet = spreadsheet.add_worksheet(file)
+        worksheet = TransyncConfig::SPREADSHEET.add_worksheet(file)
         p "Adding #{file} worksheet to spreadsheet with first row (key and languages)"
       end
 
@@ -23,9 +20,8 @@ class Init
       worksheet.save
     end
 
-    # now sync all our keys and translations to gdoc
-    # this won't work if local files are not 'clean'.
-    # to make them clean run test and update first!
+    # re-init spreadsheet after new worksheets were created
+    TransyncConfig.init_spreadsheet
     sync = TranslationSync.new(@path, 'x2g')
     sync.run('x2g')
   end

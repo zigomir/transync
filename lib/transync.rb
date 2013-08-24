@@ -24,16 +24,15 @@ module Transync
       end
     end
 
-    # TODO not finished yet
     if mode == 'update'
       TransyncConfig::CONFIG['FILES'].each do |file|
         valid, _, all_translations_for_language =
           SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], path, file)
 
-        #unless valid
-        #  xliff_trans_writer = XliffTransWriter.new(path, file)
-        #  xliff_trans_writer.save(language, trans_hash)
-        #end
+        unless valid
+          xliff_trans_writer = XliffTransWriter.new(path, file)
+          xliff_trans_writer.write(all_translations_for_language)
+        end
       end
       p 'All xliff files should now have all the keys!'
     end

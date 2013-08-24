@@ -49,7 +49,6 @@ Gem docs available at http://gimite.net/doc/google-drive-ruby
 
 # TODO
 
-- much more tests, edge cases
-- speed up, I think we are connecting too much
+- more tests, edge cases
 - more OOP
-- remove all duplicated code!
+- update for more than 2 languages
