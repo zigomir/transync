@@ -7,6 +7,16 @@ gem install transync
 You need settings file to be named `transync.yml` and to be in same directory from which we are running `transync` command.
 For example see `transync.SAMPLE.yml`.
 
+## Assumptions
+
+You have xliff files in one directory, named like: common.en.xliff where common is name of the file and also google doc
+spreadsheet tab. en is language and you have google doc with structure where first row is key, language 1, language 2
+
+## How does it work?
+
+Updating GDoc from our xliff files. It won't delete any key, it will only add new or change existing ones. Same 
+for direction from Gdoc to xliff.
+
 ### Process
 
 - Create new Google Doc Spreadsheet
@@ -28,27 +38,16 @@ transync x2g
 transync g2x
 ```
 
-### Development on this gem
+### Gem development
 
 ```
-rake install && transync test
+rake install && transync x2g|g2x test
+ruby g2x_spec.rb
+ruby x2g_spec.rb
 ```
 
-# Assumptions:
-
-You have xliff files in one directory, named like: common.en.xliff where common is name of the file and also google doc
-spreadsheet tab. en is language and you have google doc with structure where first row is key, language 1, language 2
-
-# Features
-
-Updating GDoc from our xliff files. It won't delete any key, it will only add new or change existing ones.
-
-# Source
-
-Gem docs available at http://gimite.net/doc/google-drive-ruby
+When running with test as second argument, changes won't be written to files or spreadsheet.
 
 # TODO
 
-- more tests, edge cases
-- more OOP
 - update for more than 2 languages
