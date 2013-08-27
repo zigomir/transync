@@ -1,6 +1,7 @@
 require_relative '../gdoc_trans/gdoc_trans_reader'
 require_relative '../gdoc_trans/gdoc_trans_writer'
 require_relative '../xliff_trans/xliff_trans_writer'
+require_relative '../../hash'
 
 class TranslationSync
 
@@ -11,7 +12,7 @@ class TranslationSync
     SyncUtil.create_logger(direction)
   end
 
-  def run(direction)
+  def run(direction, test)
     @config['FILES'].each do |file|
       valid, _ = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], @path, file)
       abort('Fix your Xliff translations first!') unless valid
@@ -19,6 +20,8 @@ class TranslationSync
       @config['LANGUAGES'].each do |language|
         trans_sync = TranslationSync.new(@path, direction, file)
         trans_hash = trans_sync.sync(language, direction)
+
+        next if test == 'test' # if testing don't write to files or google doc
 
         if direction == 'x2g'
           gdoc_trans_reader = GdocTransReader.new(file)
@@ -40,10 +43,16 @@ class TranslationSync
     x_trans_hash = xliff_trans_reader.translations(language)
 
     # We need to merge on translations hash, not whole hash since it will only merge first level
-    x2g_merged_translations = g_trans_hash[:translations].merge(x_trans_hash[:translations])
-    g2x_merged_translations = x_trans_hash[:translations].merge(g_trans_hash[:translations])
+    if direction == 'x2g'
+      merged_translations = g_trans_hash[:translations].merge(x_trans_hash[:translations])
+      diff = x_trans_hash[:translations].diff(g_trans_hash[:translations])
+      SyncUtil.info_diff(@file, language, diff)
+    else
+      merged_translations = x_trans_hash[:translations].merge(g_trans_hash[:translations])
+      diff = g_trans_hash[:translations].diff(x_trans_hash[:translations])
+      SyncUtil.info_diff(@file, language, diff)
+    end
 
-    merged_translations = direction == 'x2g' ? x2g_merged_translations : g2x_merged_translations
     {file: @file, language: language, translations: merged_translations}
   end
 

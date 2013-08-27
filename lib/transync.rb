@@ -4,13 +4,13 @@ require_relative 'transync/sync/sync_util'
 
 module Transync
 
-  def self.run(mode)
+  def self.run(mode, test = nil)
     FileUtils.mkdir('.transync_log') unless Dir.exist?('.transync_log')
     path = TransyncConfig::CONFIG['XLIFF_FILES_PATH']
 
     if mode == 'x2g' or mode == 'g2x'
       sync = TranslationSync.new(path, mode)
-      sync.run(mode)
+      sync.run(mode, test)
     end
 
     if mode == 'init'
