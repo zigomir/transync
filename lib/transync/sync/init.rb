@@ -23,7 +23,7 @@ class Init
     # re-init spreadsheet after new worksheets were created
     TransyncConfig.init_spreadsheet
     sync = TranslationSync.new(@path, 'x2g')
-    sync.run('x2g')
+    sync.run('x2g', nil)
   end
 
 end

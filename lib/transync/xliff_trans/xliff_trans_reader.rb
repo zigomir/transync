@@ -57,10 +57,8 @@ class XliffTransReader
         all_translations_for_language[:translations][x_trans_key] = xliff_lang_value
       end
 
-      #p "#{lang_a} => #{lang_b} (#{x_trans_key} => #{all_translations_for_language[:translations][x_trans_key]}) | Last? #{last}"
       if last
         if added
-          #p all_translations_for_language
           xliff_trans_writer = XliffTransWriter.new(path, file)
           xliff_trans_writer.write(all_translations_for_language)
         end
