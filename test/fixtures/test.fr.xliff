@@ -4,24 +4,20 @@
         <body>
             <trans-unit id="title">
                 <source>title</source>
-                <target>Title</target>
+                <target>Title - FR</target>
             </trans-unit>
             <trans-unit id="round">
                 <source>round</source>
-                <target>Round</target>
+                <target>Round - FR</target>
             </trans-unit>
             <trans-unit id="end_test">
                 <source>end_test</source>
-                <target>End test</target>
+                <target>End test - FR</target>
             </trans-unit>
             <trans-unit id="end_test_2">
                 <source>end_test_2</source>
-                <target>End test 2</target>
+                <target>End test 2 - FR</target>
             </trans-unit>
-            <!--<trans-unit id="end_test_3">-->
-                <!--<source>end_test_3</source>-->
-                <!--<target>End test 3</target>-->
-            <!--</trans-unit>-->
         </body>
     </file>
 </xliff>

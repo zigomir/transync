@@ -21,28 +21,19 @@ module Transync
     if mode == 'test'
       TransyncConfig::CONFIG['FILES'].each do |file|
         xliff_files = XliffTransReader.new(path, file, TransyncConfig::CONFIG['LANGUAGES'])
-        xliff_files.valid?
+        p 'All translation have all keys, great!' if xliff_files.valid?
       end
     end
 
     if mode == 'update'
       TransyncConfig::CONFIG['FILES'].each do |file|
         xliff_files = XliffTransReader.new(path, file, TransyncConfig::CONFIG['LANGUAGES'])
+        all_translations_for_language = xliff_files.fill_with_missing_keys
 
-        unless xliff_files.valid?
-          p 'TODO update files with missing keys'
-        end
-
-        #valid, _, all_translations_for_language =
-        #  SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], path, file)
-        #
-        #p all_translations_for_language
-        #unless valid
-        #  xliff_trans_writer = XliffTransWriter.new(path, file)
-        #  xliff_trans_writer.write(all_translations_for_language)
-        #end
+        p all_translations_for_language
+        #xliff_trans_writer = XliffTransWriter.new(path, file)
+        #xliff_trans_writer.write(all_translations_for_language)
       end
-      p 'All xliff files should now have all the keys!'
     end
   end
 
