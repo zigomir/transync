@@ -21,7 +21,7 @@ module Transync
     if mode == 'test'
       TransyncConfig::CONFIG['FILES'].each do |file|
         xliff_files = XliffTransReader.new(path, file, TransyncConfig::CONFIG['LANGUAGES'])
-        p 'All translation have all keys, great!' if xliff_files.valid?
+        p "#{file} have all the keys for all languages." if xliff_files.valid?
       end
     end
 
