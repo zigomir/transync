@@ -45,7 +45,7 @@ class XliffTransReader
     all_translations_for_language = {file: file, language: nil, translations: {}}
     added = false
 
-    check_all do |lang_a, lang_b, xliff_lang_value, x_trans_key, last| # x_trans_key comes from lang_a translations
+    check_all do |lang_a, lang_b, xliff_lang_value, x_trans_key, translations_lang_b, last| # x_trans_key comes from lang_a translations
       all_translations_for_language[:language] = lang_b
 
       if xliff_lang_value.nil?
@@ -59,6 +59,7 @@ class XliffTransReader
 
       if last
         if added
+          all_translations_for_language[:translations] = translations_lang_b.merge(all_translations_for_language[:translations])
           xliff_trans_writer = XliffTransWriter.new(path, file)
           xliff_trans_writer.write(all_translations_for_language)
         end
@@ -76,14 +77,15 @@ class XliffTransReader
         next if lang_a == lang_b
 
         xliff_reader = XliffTransReader.new(self.path, self.file, self.languages)
-        keys = self.translations(lang_a)[:translations].keys
+        translations_lang_a = self.translations(lang_a)[:translations]
+        keys = translations_lang_a.keys
         i = 1
 
         keys.each do |x_trans_key|
-          xliff_lang = xliff_reader.translations(lang_b)[:translations]
-          xliff_lang_value = xliff_lang[x_trans_key]
+          translations_lang_b = xliff_reader.translations(lang_b)[:translations]
+          xliff_lang_value = translations_lang_b[x_trans_key]
 
-          yield(lang_a, lang_b, xliff_lang_value, x_trans_key, keys.length == i) # last key?
+          yield(lang_a, lang_b, xliff_lang_value, x_trans_key, translations_lang_b, keys.length == i) # last key?
           i += 1
         end
       end

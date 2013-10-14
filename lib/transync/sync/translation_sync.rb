@@ -15,7 +15,7 @@ class TranslationSync
   def run(direction, test)
     @config['FILES'].each do |file|
       xliff_files = XliffTransReader.new(@path, file, @config['LANGUAGES'])
-      abort('Fix your Xliff translations first!') unless xliff_files.valid?
+      abort('Fix your Xliff translations by hand or run transync update!') unless xliff_files.valid?
 
       @config['LANGUAGES'].each do |language|
         trans_sync = TranslationSync.new(@path, direction, file)
