@@ -43,20 +43,33 @@ class XliffTransReader
   def fill_with_missing_keys
     missing_translation_text = TransyncConfig::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
     all_translations_for_language = {file: file, language: nil, translations: {}}
+    added = false
 
-    check_all do |lang_a, lang_b, xliff_lang_value, x_trans_key|
+    check_all do |lang_a, lang_b, xliff_lang_value, x_trans_key, last| # x_trans_key comes from lang_a translations
       all_translations_for_language[:language] = lang_b
 
       if xliff_lang_value.nil?
         p "Comparing #{file}.#{lang_a} against #{file}.#{lang_b} => #{file}.#{lang_b} "\
-          "was missing translation for key '#{x_trans_key}' => replacing with #{missing_translation_text} - #{x_trans_key}"
+          "was missing translation for key '#{x_trans_key}' => setting value: '#{missing_translation_text} - #{x_trans_key}'"
         all_translations_for_language[:translations][x_trans_key] = "#{missing_translation_text} - #{x_trans_key}"
+        added = true
       else
         all_translations_for_language[:translations][x_trans_key] = xliff_lang_value
       end
-    end
 
-    all_translations_for_language
+      #p "#{lang_a} => #{lang_b} (#{x_trans_key} => #{all_translations_for_language[:translations][x_trans_key]}) | Last? #{last}"
+      if last
+        if added
+          #p all_translations_for_language
+          xliff_trans_writer = XliffTransWriter.new(path, file)
+          xliff_trans_writer.write(all_translations_for_language)
+        end
+
+        # clear
+        all_translations_for_language[:translations] = {}
+        added = false
+      end
+    end
   end
 
   def check_all
@@ -65,11 +78,15 @@ class XliffTransReader
         next if lang_a == lang_b
 
         xliff_reader = XliffTransReader.new(self.path, self.file, self.languages)
-        self.translations(lang_a)[:translations].keys.each do |x_trans_key|
+        keys = self.translations(lang_a)[:translations].keys
+        i = 1
+
+        keys.each do |x_trans_key|
           xliff_lang = xliff_reader.translations(lang_b)[:translations]
           xliff_lang_value = xliff_lang[x_trans_key]
 
-          yield lang_a, lang_b, xliff_lang_value, x_trans_key
+          yield(lang_a, lang_b, xliff_lang_value, x_trans_key, keys.length == i) # last key?
+          i += 1
         end
       end
     end

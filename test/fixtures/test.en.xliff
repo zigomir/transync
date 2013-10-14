@@ -18,10 +18,6 @@
                 <source>end_test_2</source>
                 <target>End test 2</target>
             </trans-unit>
-            <!--<trans-unit id="end_test_3">-->
-                <!--<source>end_test_3</source>-->
-                <!--<target>End test 3</target>-->
-            <!--</trans-unit>-->
         </body>
     </file>
 </xliff>

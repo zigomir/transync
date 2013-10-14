@@ -28,11 +28,7 @@ module Transync
     if mode == 'update'
       TransyncConfig::CONFIG['FILES'].each do |file|
         xliff_files = XliffTransReader.new(path, file, TransyncConfig::CONFIG['LANGUAGES'])
-        all_translations_for_language = xliff_files.fill_with_missing_keys
-
-        p all_translations_for_language
-        #xliff_trans_writer = XliffTransWriter.new(path, file)
-        #xliff_trans_writer.write(all_translations_for_language)
+        xliff_files.fill_with_missing_keys
       end
     end
   end
