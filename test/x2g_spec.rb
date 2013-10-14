@@ -18,22 +18,11 @@ describe 'x2g' do
   end
 
   it 'test if xliff files are valid' do
-    xliff_trans_reader = XliffTransReader.new(@path, 'test', @languages)
-    valid = xliff_trans_reader.valid?
-    valid.must_equal true
+    xliff_files = XliffTransReader.new(@path, 'test', @languages)
+    xliff_files.valid?.must_equal true
 
-    xliff_trans_reader = XliffTransReader.new(@path, 'validators', @languages)
-    valid = xliff_trans_reader.valid?
-    valid.must_equal false, 'validators translations should not be valid, because we do not have all keys in german file.'
-  end
-
-  it 'test if all keys in all language files are presented' do
-    valid, _, _ = SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], @path, 'test')
-    valid.must_equal true, 'test file should have all keys in both languages'
-
-    valid, _, all_trans = SyncUtil::check_and_get_xliff_files(TransyncConfig::CONFIG['LANGUAGES'], @path, 'validators')
-    valid.must_equal false, 'validators.de file is should have one key less then validators.en xliff file'
-    all_trans[:translations].size.must_equal 4
+    xliff_files = XliffTransReader.new(@path, 'validators', @languages)
+    xliff_files.valid?.must_equal false, 'validators translations should not be valid, because we do not have all keys in german file.'
   end
 
   it 'x2g sync should build correct new hash before writing it back to google doc' do
@@ -52,6 +41,6 @@ describe 'x2g' do
     gdoc_trans_reader = GdocTransReader.new(@file)
     gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet)
     gdoc_trans_writer.get_language_column_index('en').must_equal 2
-    gdoc_trans_writer.get_language_column_index('DE').must_equal 3
+    gdoc_trans_writer.get_language_column_index('de').must_equal 3
   end
 end

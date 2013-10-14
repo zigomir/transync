@@ -14,8 +14,8 @@ class TranslationSync
 
   def run(direction, test)
     @config['FILES'].each do |file|
-      valid, _ = SyncUtil::check_and_get_xliff_files(@config['LANGUAGES'], @path, file)
-      abort('Fix your Xliff translations first!') unless valid
+      xliff_files = XliffTransReader.new(@path, file, @config['LANGUAGES'])
+      abort('Fix your Xliff translations first!') unless xliff_files.valid?
 
       @config['LANGUAGES'].each do |language|
         trans_sync = TranslationSync.new(@path, direction, file)

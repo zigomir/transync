@@ -50,4 +50,5 @@ When running with test as second argument, changes won't be written to files or 
 
 # TODO
 
+- update doesn't work for all languages (if we have two different language it will work only for one)
 - update for more than 2 languages

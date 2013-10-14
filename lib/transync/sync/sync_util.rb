@@ -3,23 +3,23 @@ require_relative '../xliff_trans/xliff_trans_reader'
 
 module SyncUtil
 
-  def self.check_and_get_xliff_files(languages, path, file)
-    valid = true
-    xliff_translations = []
-    all_translations_for_language = {}
-
-    languages.each do |language|
-      xliff_reader = XliffTransReader.new(path, file, languages)
-      if xliff_reader.valid?
-        xliff_translations << xliff_reader.translations(language)
-      else
-        valid = false
-        all_translations_for_language = xliff_reader.all_translations_for_language
-      end
-    end
-
-    return valid, xliff_translations, all_translations_for_language
-  end
+  #def self.check_and_get_xliff_files(languages, path, file)
+  #  valid = true
+  #  xliff_translations = []
+  #  all_translations_for_language = {}
+  #
+  #  languages.each do |language|
+  #    xliff_reader = XliffTransReader.new(path, file, languages)
+  #    if xliff_reader.valid?
+  #      xliff_translations << xliff_reader.translations(language)
+  #    else
+  #      valid = false
+  #      all_translations_for_language = xliff_reader.all_translations_for_language
+  #    end
+  #  end
+  #
+  #  return valid, xliff_translations, all_translations_for_language
+  #end
 
   def self.info_clean(file, language, message)
     msg = "#{file} (#{language}) - #{message}"

@@ -32,11 +32,6 @@ describe 'g2x' do
   end
 
   it 'g2x sync should build new hash before writing it to xliff' do
-    _, xliff_translations = SyncUtil::check_and_get_xliff_files(%w(en), @path, @file)
-    xliff_translations[0][:file].must_equal @file
-    xliff_translations[0][:language].must_equal @language
-    xliff_translations[0][:translations].keys.size.must_equal 4
-
     trans_sync     = TranslationSync.new(@path, 'g2x', @file)
     new_xliff_hash = trans_sync.sync(@language, 'g2x')
 
