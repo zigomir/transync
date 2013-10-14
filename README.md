@@ -46,9 +46,4 @@ ruby g2x_spec.rb
 ruby x2g_spec.rb
 ```
 
-When running with test as second argument, changes won't be written to files or spreadsheet.
-
-# TODO
-
-- update doesn't work for all languages (if we have two different language it will work only for one)
-- update for more than 2 languages
+When running with `test` as second argument, changes won't be written to files or spreadsheet.
