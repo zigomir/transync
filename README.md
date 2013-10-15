@@ -29,9 +29,9 @@ for direction from Gdoc to xliff.
 ### Running order
 
 ```
-transync test   # test if all keys are set for all the languages: no output means that no key is missing
+transync test   # test if all keys are set for all the languages. Also tests if everything in sync with GDoc
 transync update # will test and add all the missing keys that are not presented for a particular language
-transync init   # will sync all translations with Google spreadsheet. You need to run update command first, to ensure no keys are missing.
+transync init   # will sync all translations with Google spreadsheet. You need to run update command first, to ensure no keys are missing
 
 # After init was made you have these two to sync between gdoc and xliff
 transync x2g
@@ -41,9 +41,14 @@ transync g2x
 ### Gem development
 
 ```
-rake install && transync x2g|g2x test
 ruby g2x_spec.rb
 ruby x2g_spec.rb
 ```
 
-When running with `test` as second argument, changes won't be written to files or spreadsheet.
+## TODO
+
+- use ruby's 2.0 named parameters (more clear method calls)
+- refactor
+- better tests (move out network dependency -> maybe try VCR)
+- add to travis / code climate
+- don't allow empty keys?

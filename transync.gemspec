@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'google_drive'
   spec.add_runtime_dependency 'builder'
+  spec.add_runtime_dependency 'colorize'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'

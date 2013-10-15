@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'transync'
-Transync.run ARGV[0], ARGV[1]
+
+FileUtils.mkdir('.transync_log') unless Dir.exist?('.transync_log')
+Transync.run ARGV[0]

@@ -8,17 +8,17 @@ module SyncUtil
     SyncUtil.log_and_puts(msg)
   end
 
-  def self.info_diff(file, language, diff)
-    msg = "#{file} (#{language})"
-    if diff.empty?
-      msg += ' already has same keys and values'
-    else
-      msg = build_diff_print(diff, msg)
+  def self.info_diff(file, language, diff, diff_only = nil)
+    msg = ''
+
+    unless diff.empty?
+      msg = "#{file} (#{language})\n" if not diff_only
+      msg = build_diff_print(diff, msg, diff_only)
     end
     SyncUtil.log_and_puts(msg)
   end
 
-  def self.build_diff_print(diff, msg)
+  def self.build_diff_print(diff, msg, diff_only = nil)
     begin
       # get longest key and value
       max_key_length = diff.keys.max { |a, b| a.length <=> b.length }.length
@@ -28,15 +28,26 @@ module SyncUtil
       max_val_length = 0
     end
 
+    newline = ''
     diff.keys.each do |key|
-      operation = diff[key][1].nil? ? 'Adding' : 'Changing'
-      msg += "\n  #{operation.ljust(8)} - #{key.ljust(max_key_length)}: '#{diff[key][1].to_s.ljust(max_val_length)}' => '#{diff[key][0]}' "
+      change_mark = ' => '
+      operation = diff[key][1].nil? ? 'adding' : 'changing'
+      ljust = 8
+
+      if diff_only
+        operation = 'diff'
+        change_mark = ' <=> '
+        ljust = 4
+      end
+
+      msg += "#{newline}[#{operation.ljust(ljust)}] #{key.ljust(max_key_length)}: '#{diff[key][1].to_s.ljust(max_val_length)}'#{change_mark}'#{diff[key][0]}' "
+      newline = "\n"
     end
     msg
   end
 
   def self.log_and_puts(msg)
-    puts msg
+    puts msg unless msg.length == 0
     @logger.info msg
   end
 

@@ -44,6 +44,7 @@ class XliffTransReader
     missing_translation_text = TransyncConfig::CONFIG['MISSING_TRANSLATION_TEXT'] || '#MISSING-TRANS#'
     all_translations_for_language = {file: file, language: nil, translations: {}}
     added = false
+    clean = true
 
     check_all do |lang_a, lang_b, xliff_lang_value, x_trans_key, translations_lang_b, last| # x_trans_key comes from lang_a translations
       all_translations_for_language[:language] = lang_b
@@ -53,6 +54,7 @@ class XliffTransReader
           "was missing translation for key '#{x_trans_key}' => setting value: '#{missing_translation_text} - #{x_trans_key}'"
         all_translations_for_language[:translations][x_trans_key] = "#{missing_translation_text} - #{x_trans_key}"
         added = true
+        clean = false
       else
         all_translations_for_language[:translations][x_trans_key] = xliff_lang_value
       end
@@ -69,6 +71,9 @@ class XliffTransReader
         added = false
       end
     end
+
+    # return if any key was added
+    clean
   end
 
   def check_all

@@ -12,7 +12,7 @@ class TranslationSync
     SyncUtil.create_logger(direction)
   end
 
-  def run(direction, test)
+  def run(direction)
     @config['FILES'].each do |file|
       xliff_files = XliffTransReader.new(@path, file, @config['LANGUAGES'])
       abort('Fix your Xliff translations by hand or run transync update!') unless xliff_files.valid?
@@ -20,8 +20,6 @@ class TranslationSync
       @config['LANGUAGES'].each do |language|
         trans_sync = TranslationSync.new(@path, direction, file)
         trans_hash = trans_sync.sync(language, direction)
-
-        next if test == 'test' # if testing don't write to files or google doc
 
         if direction == 'x2g'
           gdoc_trans_reader = GdocTransReader.new(file)
@@ -54,6 +52,18 @@ class TranslationSync
     end
 
     {file: @file, language: language, translations: merged_translations}
+  end
+
+  def diff(language)
+    gdoc_trans_reader  = GdocTransReader.new(@file)
+    xliff_trans_reader = XliffTransReader.new(@path, @file, nil)
+
+    g_trans_hash = gdoc_trans_reader.translations(language)
+    x_trans_hash = xliff_trans_reader.translations(language)
+
+    diff = x_trans_hash[:translations].diff(g_trans_hash[:translations])
+    SyncUtil.info_diff(@file, language, diff, true)
+    diff
   end
 
 end

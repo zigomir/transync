@@ -1,4 +1,5 @@
 require 'google_drive'
+require 'colorize'
 
 class GdocTransWriter
 
@@ -9,7 +10,7 @@ class GdocTransWriter
   def write(trans_hash)
     language    = trans_hash[:language]
     lang_column = get_language_column_index(language)
-    abort("Language (#{language}) not found in worksheet (#{@worksheet.title})!") if lang_column == 0
+    abort("\u{2717} Language (#{language}) not found in worksheet '#{@worksheet.title}'!".colorize(:red)) if lang_column == 0
 
     row = 2
 
