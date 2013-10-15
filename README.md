@@ -48,7 +48,6 @@ ruby x2g_spec.rb
 ## TODO
 
 - use ruby's 2.0 named parameters (more clear method calls)
-- refactor
 - better tests (move out network dependency -> maybe try VCR)
 - add to travis / code climate
 - don't allow empty keys?

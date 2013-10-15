@@ -8,18 +8,9 @@ module Transync
   def self.run(mode)
     if mode == 'x2g' or mode == 'g2x'
       Transync::Runner.sync(mode)
-    end
-
-    if mode == 'init'
-      Transync::Runner.init
-    end
-
-    if mode == 'test'
-      Transync::Runner.test
-    end
-
-    if mode == 'update'
-      Transync::Runner.update
+    else
+      # will send message to (call) init, test, update
+      Transync::Runner.send(mode)
     end
   end
 
