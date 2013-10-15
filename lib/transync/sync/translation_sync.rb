@@ -17,16 +17,17 @@ class TranslationSync
       xliff_files = XliffTransReader.new(@path, file, @config['LANGUAGES'])
       abort('Fix your Xliff translations by hand or run transync update!') unless xliff_files.valid?
 
+      gdoc_trans_reader  = GdocTransReader.new(file)
+      gdoc_trans_writer  = GdocTransWriter.new(gdoc_trans_reader.worksheet)
+      xliff_trans_writer = XliffTransWriter.new(@path, file)
+
       @config['LANGUAGES'].each do |language|
         trans_sync = TranslationSync.new(@path, direction, file)
         trans_hash = trans_sync.sync(language, direction)
 
         if direction == 'x2g'
-          gdoc_trans_reader = GdocTransReader.new(file)
-          gdoc_trans_writer = GdocTransWriter.new(gdoc_trans_reader.worksheet)
           gdoc_trans_writer.write(trans_hash)
         else
-          xliff_trans_writer = XliffTransWriter.new(@path, file)
           xliff_trans_writer.write(trans_hash)
         end
       end

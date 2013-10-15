@@ -1,3 +1,4 @@
+require 'colorize'
 require_relative '../transync_config'
 
 class GdocTransReader
@@ -5,8 +6,8 @@ class GdocTransReader
 
   # file represents tab in spreadsheet
   def initialize(file)
-    @worksheet = TransyncConfig::WORKSHEETS.detect{ |w| w.title == file }
-    abort("#{file} tab is not defined in GDoc") if @worksheet.nil?
+    @worksheet = TransyncConfig.worksheets.detect{ |w| w.title == file }
+    abort("\u{2717} '#{file}' tab is not defined in GDoc".colorize(:red)) if @worksheet.nil?
   end
 
   def translations(language)

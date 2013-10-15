@@ -8,6 +8,9 @@ module TransyncConfig
   WORKSHEET_COLUMNS = { key: 1 }
   START_ROW = 2
 
+  @spreadsheet = nil
+  @worksheets  = nil
+
   def self.init_spreadsheet
     session     = GoogleDrive.login(CONFIG['GDOC']['email'], CONFIG['GDOC']['password'])
     spreadsheet = session.spreadsheet_by_key(CONFIG['GDOC']['key'])
@@ -16,18 +19,33 @@ module TransyncConfig
     return spreadsheet, worksheets
   end
 
+  # This gets executed automatically when module is evaluated (required?)
   begin
     CONFIG = YAML.load(File.open('transync.yml'))
-    SPREADSHEET, WORKSHEETS = TransyncConfig.init_spreadsheet
+    @spreadsheet, @worksheets = TransyncConfig.init_spreadsheet
+
+    # populate languages dynamically from settings yaml file
+    CONFIG['LANGUAGES'].each_with_index do |language, index|
+      key = language
+      value = index + 2
+      WORKSHEET_COLUMNS[key.to_sym] = value
+    end
   rescue => e
     p e.message
     exit(1)
   end
 
-  # populate languages dynamically from settings yaml file
-  CONFIG['LANGUAGES'].each_with_index do |language, index|
-    key = language
-    value = index + 2
-    WORKSHEET_COLUMNS[key.to_sym] = value
+  # used for init command after we create new tabs
+  def self.re_init
+    @spreadsheet, @worksheets = TransyncConfig.init_spreadsheet
   end
+
+  def self.worksheets
+    @worksheets
+  end
+
+  def self.spreadsheet
+    @spreadsheet
+  end
+
 end

@@ -22,7 +22,9 @@ module Transync
       TransyncConfig::CONFIG['FILES'].each do |file|
         xliff_files = XliffTransReader.new(PATH, file, TransyncConfig::CONFIG['LANGUAGES'])
         puts "\u{2713} '#{file}' have all the keys for all languages in XLIFF files.".colorize(:green) if xliff_files.valid?
+      end
 
+      TransyncConfig::CONFIG['FILES'].each do |file|
         TransyncConfig::CONFIG['LANGUAGES'].each do |language|
           trans_sync = TranslationSync.new(PATH, 'test', file)
 
@@ -32,7 +34,6 @@ module Transync
             puts "\u{2717} '#{file}.#{language}' XLIFF is NOT in sync with GDoc. See diff!".colorize(:red)
           end
         end
-
         puts '----------'
       end
     end
