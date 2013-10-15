@@ -27,9 +27,9 @@ module Transync
           trans_sync = TranslationSync.new(PATH, 'test', file)
 
           if trans_sync.diff(language).keys.length == 0
-            puts "\u{2713} '#{file}' is in sync for '#{language}' language with GDoc.".colorize(:green)
+            puts "\u{2713} '#{file}.#{language}' XLIFF is in sync with GDoc.".colorize(:green)
           else
-            puts "\u{2717} '#{file}' is NOT in sync for '#{language}' language with GDoc. See diff!".colorize(:red)
+            puts "\u{2717} '#{file}.#{language}' XLIFF is NOT in sync with GDoc. See diff!".colorize(:red)
           end
         end
 
