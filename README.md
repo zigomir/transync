@@ -53,4 +53,3 @@ ruby update_spec.rb
 - use ruby's 2.0 named parameters (more clear method calls)
 - better tests (move out network dependency -> maybe try VCR, run all tests with RAKE)
 - add to travis / code climate
-- don't allow empty keys?
