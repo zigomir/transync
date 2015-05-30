@@ -7,6 +7,12 @@ gem install transync
 You need settings file to be named `transync.yml` and to be in same directory from which we are running `transync` command.
 For example see `transync.SAMPLE.yml`.
 
+## Google Drive OAuth
+
+You'll need to create an API project for Google Drive. Good instructions are written
+[here](https://github.com/google/google-api-ruby-client-samples/tree/master/drive#enable-the-drive-api).
+Just copy and paste `client_id` and `client_secret` into `transync.yml` file.
+
 ## Assumptions
 
 You have xliff files in one directory (I suggest `app/Resources/translations`), named like: `common.en.xliff` where `common`
@@ -15,7 +21,7 @@ first row is `key`, `language 1`, `language 2`, ...
 
 ## How does it work?
 
-Updating GDoc from our xliff files. It won't delete any key, it will only add new or change existing ones. Same 
+Updating GDoc from our xliff files. It won't delete any key, it will only add new or change existing ones. Same
 for direction from GDoc to xliff.
 
 ### Process

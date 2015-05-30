@@ -2,8 +2,8 @@
 # GDOC key from URL is 2fKTnCh1uSzBjXX5ZFBCLPx7JCMlMY8V7nbzSVbVyw56
 GDOC:
   key: "2fKTnCh1uSzBjXX5ZFBCLPx7JCMlMY8V7nbzSVbVyw56"
-  email: "user@example.com"
-  password: "secret"
+  client_id: "<your-client-id>"
+  client_secret: "<your-client-secret>"
 
 MISSING_TRANSLATION_TEXT: "#MISSING-TRANS#"
 XLIFF_FILES_PATH: test/fixtures
